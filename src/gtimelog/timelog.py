@@ -866,6 +866,16 @@ class TimeLog(object):
             first_of_next_month, self.virtual_midnight)
         return self.window_for(min, max)
 
+    def window_for_year(self, date):
+        """Return a TimeWindow for the year that contains date."""
+        first_of_this_month = first_of_month(date)
+        first_of_next_month = next_month(date)
+        min = datetime.datetime.combine(
+            first_of_this_month, self.virtual_midnight)
+        max = datetime.datetime.combine(
+            first_of_next_month, self.virtual_midnight)
+        return self.window_for(min, max)
+
     def window_for_date_range(self, min, max):
         min = datetime.datetime.combine(min, self.virtual_midnight)
         max = datetime.datetime.combine(max, self.virtual_midnight)

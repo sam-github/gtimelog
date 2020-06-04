@@ -742,6 +742,11 @@ class MainWindow:
             day = self.timelog.day
         return self.timelog.window_for_month(day)
 
+    def yearly_window(self, day=None):
+        if not day:
+            day = self.timelog.day
+        return self.timelog.window_for_year(day)
+
     def on_previous_month_report_activate(self, widget):
         """File -> Monthly Report for a Previous Month"""
         day = self.choose_date()
@@ -776,6 +781,18 @@ class MainWindow:
             report = reports.monthly_report_categorized
         else:
             report = reports.monthly_report_plain
+        self.mail(report)
+
+    def on_last_year_report_activate(self, widget):
+        """File -> Yearly Report for Last Year"""
+        day = self.timelog.day - datetime.timedelta(self.timelog.day.day)
+        reports = Reports(self.yearly_window(day=day))
+        if self.settings.report_style == 'plain':
+            report = reports.yearly_report_plain
+        elif self.settings.report_style == 'categorized':
+            report = reports.yearly_report_categorized
+        else:
+            report = reports.yearly_report_plain
         self.mail(report)
 
     def range_window(self, min, max):
