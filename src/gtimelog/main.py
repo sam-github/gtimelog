@@ -50,22 +50,6 @@ if '--debug' in sys.argv:
 
 HERE = os.path.dirname(__file__)
 
-SCHEMA_DIR = os.path.join(HERE, 'data')
-if SCHEMA_DIR and not os.environ.get('GSETTINGS_SCHEMA_DIR'):
-    # Have to do this before importing 'gi'.
-    os.environ['GSETTINGS_SCHEMA_DIR'] = SCHEMA_DIR
-    if not os.path.exists(os.path.join(SCHEMA_DIR, 'gschemas.compiled')):
-        # This, too, I have to do before importing 'gi'.
-        print("Compiling GSettings schema")
-        glib_compile_schemas = os.path.join(sys.prefix, 'lib', 'site-packages', 'gnome', 'glib-compile-schemas.exe')
-        if not os.path.exists(glib_compile_schemas):
-            glib_compile_schemas = 'glib-compile-schemas'
-        try:
-            subprocess.call([glib_compile_schemas, SCHEMA_DIR])
-        except OSError as e:
-            print("Failed: %s" % e)
-
-
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Soup', '2.4')
@@ -95,7 +79,7 @@ else:
 
 mark_time("gtimelog imports done")
 
-UI_DIR = HERE
+UI_DIR = '/usr/share/gtimelog'
 
 if (Gtk.MAJOR_VERSION, Gtk.MINOR_VERSION) < (3, 12):
     UI_FILE = os.path.join(UI_DIR, 'gtimelog-gtk3.10.ui')
@@ -108,9 +92,9 @@ ABOUT_DIALOG_UI_FILE = os.path.join(UI_DIR, 'about.ui')
 SHORTCUTS_UI_FILE = os.path.join(UI_DIR, 'shortcuts.ui')
 MENUS_UI_FILE = os.path.join(UI_DIR, 'menus.ui')
 CSS_FILE = os.path.join(UI_DIR, 'gtimelog.css')
-LOCALE_DIR = os.path.join(UI_DIR, 'locale')
+LOCALE_DIR = '/usr/share/locale'
 
-CONTRIBUTORS_FILE = os.path.join(UI_DIR, 'CONTRIBUTORS.rst')
+CONTRIBUTORS_FILE = os.path.join('/usr/share/doc/gtimelog', 'CONTRIBUTORS.rst')
 
 
 log = logging.getLogger('gtimelog')
@@ -1784,6 +1768,7 @@ class LogView(Gtk.TextView):
             self.wfmt(fmt2, *args)
 
         self.w('\n')
+        """
         if self.time_range == 'day':
             fmt1 = _('Total slacking: {0} ({1} this week, {2} per day)')
             fmt2 = _('Total slacking: {0} ({1} this week)')
@@ -1804,6 +1789,7 @@ class LogView(Gtk.TextView):
             self.wfmt(fmt1, *args)
         else:
             self.wfmt(fmt2, *args)
+        """
 
         if not self.should_have_extended_footer():
             self._extended_footer = False
@@ -1811,7 +1797,24 @@ class LogView(Gtk.TextView):
 
         self._extended_footer = True
 
-        if self.hours:
+        if True:
+            self.w('\n')
+            week_total_time = week_total_work #+ self.get_current_task_work_time()
+            week_work_days = max(1, work_days)
+            week_time_left = datetime.timedelta(hours=self.hours*week_work_days) - week_total_time
+            week_time_to_leave = self.now + week_time_left
+            if week_time_left < datetime.timedelta(0):
+                fmt = _("Weekly overtime: {0}")
+                week_time_left = -week_time_left
+            else:
+                fmt = _('Weekly time left: {0} (till {1:%H:%M})')
+            self.wfmt(
+                fmt,
+                (format_duration(week_time_left), 'duration'),
+                (week_time_to_leave, 'time'),
+            )
+
+        if self.hours and False:
             self.w('\n')
             time_left = self.time_left_at_work(total_work)
             time_to_leave = self.now + time_left
