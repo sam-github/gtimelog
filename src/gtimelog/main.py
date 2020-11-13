@@ -1760,6 +1760,7 @@ class LogView(Gtk.TextView):
             self.wfmt(fmt2, *args)
 
         self.w('\n')
+        """
         if self.time_range == 'day':
             fmt1 = _('Total slacking: {0} ({1} this week, {2} per day)')
             fmt2 = _('Total slacking: {0} ({1} this week)')
@@ -1780,6 +1781,7 @@ class LogView(Gtk.TextView):
             self.wfmt(fmt1, *args)
         else:
             self.wfmt(fmt2, *args)
+        """
 
         if not self.should_have_extended_footer():
             self._extended_footer = False
@@ -1787,7 +1789,24 @@ class LogView(Gtk.TextView):
 
         self._extended_footer = True
 
-        if self.hours:
+        if True:
+            self.w('\n')
+            week_total_time = week_total_work #+ self.get_current_task_work_time()
+            week_work_days = max(1, work_days)
+            week_time_left = datetime.timedelta(hours=self.hours*week_work_days) - week_total_time
+            week_time_to_leave = self.now + week_time_left
+            if week_time_left < datetime.timedelta(0):
+                fmt = _("Weekly overtime: {0}")
+                week_time_left = -week_time_left
+            else:
+                fmt = _('Weekly time left: {0} (till {1:%H:%M})')
+            self.wfmt(
+                fmt,
+                (format_duration(week_time_left), 'duration'),
+                (week_time_to_leave, 'time'),
+            )
+
+        if self.hours and False:
             self.w('\n')
             time_left = self.time_left_at_work(total_work)
             time_to_leave = self.now + time_left
