@@ -1,0 +1,23 @@
+
+p/gtimelog (local-0.11.3) % sudo ln -fs /home/sroberts/p/gtimelog/src/gtimelog/main.py /usr/lib/python3/dist-packages/gtimelog/main.py
+[sudo] password for sroberts: 
+p/gtimelog (local-0.11.3) % diff -u /home/sroberts/p/gtimelog/src/gtimelog/main.py /usr/lib/python3/dist-packages/gtimelog/main.py
+p/gtimelog (local-0.11.3) % git remotes
+origin  git@github.com:sam-github/gtimelog.git (fetch)
+origin  git@github.com:sam-github/gtimelog.git (push)
+upstream        ssh://git@github.com/gtimelog/gtimelog (fetch)
+upstream        ssh://git@github.com/gtimelog/gtimelog (push)
+p/gtimelog (local-0.11.3) % git w origin
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 698 bytes | 232.00 KiB/s, done.
+Total 5 (delta 3), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+remote: 
+remote: Create a pull request for 'local-0.11.3' on GitHub by visiting:
+remote:      https://github.com/sam-github/gtimelog/pull/new/local-0.11.3
+remote: 
+To github.com:sam-github/gtimelog.git
+ * [new branch]      local-0.11.3 -> local-0.11.3
