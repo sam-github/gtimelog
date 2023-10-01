@@ -1,4 +1,9 @@
+This worked:
 
+python2 setup.py install --user
+
+
+Ancient notes:
 p/gtimelog (local-0.11.3) % sudo ln -fs /home/sroberts/p/gtimelog/src/gtimelog/main.py /usr/lib/python3/dist-packages/gtimelog/main.py
 [sudo] password for sroberts: 
 p/gtimelog (local-0.11.3) % diff -u /home/sroberts/p/gtimelog/src/gtimelog/main.py /usr/lib/python3/dist-packages/gtimelog/main.py
